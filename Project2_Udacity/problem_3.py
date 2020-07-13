@@ -8,6 +8,7 @@ def determine_frequency(message):
         INPUT: message (str)
         OUTPUT: dictionary containing the frequency of each character
     """
+
     freq_dict = dict({})
     for character in message:
         if (character in freq_dict):
@@ -122,6 +123,16 @@ def huffman_encoding(message):
 
     test_heap = build_priority_queue(determine_frequency(message))
     h_tree = huffman_tree()
+
+    if(len(test_heap) == 1):
+        h_tree.set_root(heapq.heappop(test_heap))
+        [freq, char] = h_tree.get_root().get_value()
+        encoded_str = ''
+        for i in range(0, freq+1):
+            encoded_str += '1'
+
+        return encoded_str, h_tree
+
     #Building the Huffman Tree
     while (len(test_heap) != 1):
 
@@ -150,6 +161,7 @@ def huffman_encoding(message):
     encoding_key = encoder(h_tree.get_root())
 
     encoded_str = ''
+
     for char in message:
         encoded_str += encoding_key[char]
 
@@ -158,9 +170,17 @@ def huffman_encoding(message):
 def huffman_decoding(encoded_message, tree):
 
     root_node = tree.get_root()
+
     decoded_str = ''
     encoded_index = 0
     encode_length = len(encoded_message)
+
+    if(not root_node.has_left_child() and not root_node.has_right_child()):
+        [freq, char] = root_node.get_value()
+        for chr in encoded_message:
+            decoded_str += char
+        return decoded_str
+
     while(encoded_index < encode_length):
         [char, index] = traverse2decode(root_node, encoded_message, encoded_index)
         decoded_str += char
@@ -182,11 +202,12 @@ def traverse2decode(node, message, index):
 
     return [char, out_index]
 
+
 #TEST CASE 1
 if __name__ == "__main__":
     codes = {}
 
-    a_great_sentence = "The bird is the word"
+    a_great_sentence = "        "
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
     print ("The content of the data is: {}\n".format(a_great_sentence))
@@ -195,19 +216,19 @@ if __name__ == "__main__":
 
     print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
     print ("The content of the encoded data is: {}\n".format(encoded_data))
-    #should return 1000111111100100001101110000101110110110100011111111001101010011100001
+    #should return 111111111
 
     decoded_data = huffman_decoding(encoded_data, tree)
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the decoded data is: {}\n".format(decoded_data))
-    #should return  "The bird is the word"
+    #should return "        "
 
 #TEST CASE 2
 if __name__ == "__main__":
     codes = {}
 
-    a_great_sentence = "12__t2 34AAAAABDE"
+    a_great_sentence = "aaaaaaaaaaaaaaaa"
 
     print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
     print ("The content of the data is: {}\n".format(a_great_sentence))
@@ -216,12 +237,12 @@ if __name__ == "__main__":
 
     print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
     print ("The content of the encoded data is: {}\n".format(encoded_data))
-    #should return  000001000100110110100110000110001111111111011110101001
+    #should return  1111111111111111
     decoded_data = huffman_decoding(encoded_data, tree)
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
     print ("The content of the decoded data is: {}\n".format(decoded_data))
-    #should return 12__t2 34AAAAABDE
+    #should return "aaaaaaaaaaaaaaaa"
 
 #TEST CASE 3
 if __name__ == "__main__":
@@ -237,7 +258,7 @@ if __name__ == "__main__":
     print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
     print ("The content of the encoded data is: {}\n".format(encoded_data))
     #should return 1100010110101110101000111100001111
-    
+
     decoded_data = huffman_decoding(encoded_data, tree)
 
     print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))

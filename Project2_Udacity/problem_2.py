@@ -19,6 +19,9 @@ def find_files(suffix, path):
        a list of paths
     """
     pathList = []
+    #Updated code here
+    if(not os.path.isdir(path) and not os.path.isfile(path)):
+        return "Sorry, file path does not exist! Try again."
 
     dir_contents = os.listdir(path)
 
@@ -40,4 +43,5 @@ def find_files(suffix, path):
 #NOTE: I have used the local directory of the file mentioned in the description to test this function
 print(find_files(".c",r"C:\Users\aruns\Downloads\testdir"))
 
-#Also, due to the nature of this problem and local directory issues, I am not adding two more test cases here
+#Included test case where file path does not exist
+print(find_files(".c",r"C:\Users\aruns\Downloads\testdir23"))
