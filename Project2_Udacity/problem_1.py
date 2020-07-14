@@ -55,7 +55,12 @@ class LRU_Cache(object):
 
         self.hash_dict = {}
 
-        self.capacity = capacity
+        if(type(capacity) is not int):
+            raise ValueError('Invalid input for LRU Cache size')
+        elif(capacity <= 0):
+            raise ValueError('Invalid input for LRU Cache size')
+        else:
+            self.capacity = capacity
 
         #Variable to keep track of capacity
         self.cache_counter = 0
@@ -100,53 +105,53 @@ class LRU_Cache(object):
 
 # Test Case 1
 
-our_cache = LRU_Cache(5)
+try:
+    our_cache = LRU_Cache(5)
+except ValueError:
+    print("Please revisit your input for cache size")
+else:
+    our_cache.set(1, 1);
+    our_cache.set(2, 2);
+    our_cache.set(3, 3);
+    our_cache.set(4, 4);
 
-our_cache.set(1, 1);
-our_cache.set(2, 2);
-our_cache.set(3, 3);
-our_cache.set(4, 4);
+    print(our_cache.get(1))       # returns 1
+    print(our_cache.get(2))       # returns 2
+    print(our_cache.get(9))     # returns -1 because 9 is not present in the cache
 
-print(our_cache.get(1))       # returns 1
-print(our_cache.get(2))       # returns 2
-print(our_cache.get(9))     # returns -1 because 9 is not present in the cache
+    our_cache.set(5, 5)
+    our_cache.set(6, 6)
 
-our_cache.set(5, 5)
-our_cache.set(6, 6)
+    print(our_cache.get(3))     # returns -1 because the cache reached it's capacity and 3 was the least recently used entry
 
-print(our_cache.get(3))     # returns -1 because the cache reached it's capacity and 3 was the least recently used entry
-
-print('----END------OF-------TEST-------CASE------')
+    print('----END------OF-------TEST-------CASE------')
 # Test Case 2
+try:
+    our_cache_2 = LRU_Cache("haha")
+except ValueError:
+    print("Please revisit your input for cache size")
+else:
+    our_cache_2.set(1, 10);
+    our_cache_2.set(2, 30);
 
-our_cache_2 = LRU_Cache(2)
+    print(our_cache_2.get(1))   #should return 10
+    print(our_cache_2.get(3))   #should return -1
 
-our_cache_2.set(1, 10);
-our_cache_2.set(2, 30);
+    our_cache_2.set(3, None)
+    our_cache_2.set(4, 85)
 
-print(our_cache_2.get(1))   #should return 10
-print(our_cache_2.get(3))   #should return -1
+    print(our_cache_2.get(3)) #should return None
 
-our_cache_2.set(3, None)
-our_cache_2.set(4, 85)
+    print('----END------OF-------TEST-------CASE------')
 
-print(our_cache_2.get(3)) #should return None
+try:
+    our_cache_3 = LRU_Cache(0)
+except ValueError:
+    print("Please revisit your input for cache size")
+else:
+    our_cache_3.set(1, 10)
+    our_cache_3.set(2, 20)
 
-print('----END------OF-------TEST-------CASE------')
+    print(our_cache_3.get(1))
 
-#Test Case 3 (Under capacity cache)
-our_cache_3 = LRU_Cache(10)
-
-our_cache_3.set(1, 10);
-our_cache_3.set(2, 30);
-
-print(our_cache_3.get(1))   #should return 10
-print(our_cache_3.get(3))   #should return -1
-
-our_cache_3.set(3, 50)
-our_cache_3.set(4, 85)
-
-print(our_cache_3.get(3)) #should return 50
-print(our_cache_3.get(1)) #should return 10
-
-print('----END------OF-------TEST-------CASE------')
+    print('----END------OF-------TEST-------CASE------')
